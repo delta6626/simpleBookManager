@@ -112,6 +112,10 @@ header {
   display: none;
 }
 
+.modal::backdrop {
+  background-color: rgba(41, 41, 41, 0.5); /* dark overlay */
+}
+
 .modal {
   width: 500px;
   padding: 1rem;
