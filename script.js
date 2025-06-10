@@ -1,4 +1,12 @@
+// ================================
+// DOM element references
+// ================================
+
+// Table and book counter
 const bookTable = document.getElementById("bookTable");
+const bookCountText = document.getElementById("bookCountText");
+
+// Table header HTML structure
 const tableHeader = `<tr>
                         <th>ID</th>
                         <th>Title</th>
@@ -7,7 +15,8 @@ const tableHeader = `<tr>
                         <th>Genre</th>
                         <th>Actions</th>
                      </tr>`;
-const bookCountText = document.getElementById("bookCountText");
+
+// Modals
 const addBookModal = document.getElementById("addBookModal");
 const editBookModal = document.getElementById("editBookModal");
 const deleteBookModal = document.getElementById("deleteBookModal");
@@ -15,6 +24,7 @@ const deleteBookByTitleModal = document.getElementById(
   "deleteBookByTitleModal"
 );
 
+// Input fields (Add)
 const addBookModalBookTitle = document.getElementById("addBookModalBookTitle");
 const addBookModalBookAuthor = document.getElementById(
   "addBookModalBookAuthor"
@@ -22,6 +32,7 @@ const addBookModalBookAuthor = document.getElementById(
 const addBookModalBookYear = document.getElementById("addBookModalBookYear");
 const addBookModalBookGenre = document.getElementById("addBookModalBookGenre");
 
+// Input fields (Edit)
 const editBookModalBookTitle = document.getElementById(
   "editBookModalBookTitle"
 );
@@ -29,19 +40,21 @@ const editBookModalBookAuthor = document.getElementById(
   "editBookModalBookAuthor"
 );
 const editBookModalBookYear = document.getElementById("editBookModalBookYear");
-
 const editBookModalBookGenre = document.getElementById(
   "editBookModalBookGenre"
 );
 
+// Input field (Delete by Title)
 const deleteBookByTitleModalBookTitle = document.getElementById(
   "deleteBookByTitleModalBookTitle"
 );
 
+// Buttons
 const btnShowAddBookModal = document.getElementById("btnShowAddBookModal");
 const btnShowDeleteBookByTitleModal = document.getElementById(
   "btnShowDeleteBookByTitleModal"
 );
+
 const btnAddBook = document.getElementById("btnAddBook");
 const btnCancelAdd = document.getElementById("btnCancelAdd");
 
@@ -58,12 +71,18 @@ const btnCancelDeleteByTitle = document.getElementById(
   "btnCancelDeleteByTitle"
 );
 
+// Error message displays
 const addBookErrorMessage = document.getElementById("addBookErrorMessage");
 const editBookErrorMessage = document.getElementById("editBookErrorMessage");
 const deleteBookByTitleErrorMessage = document.getElementById(
   "deleteBookByTitleErrorMessage"
 );
 
+// ================================
+// Initial data and error messages
+// ================================
+
+// Array to store book records
 let books = [
   {
     title: "To Kill a Mockingbird",
@@ -80,6 +99,7 @@ let books = [
   },
 ];
 
+// Predefined error messages
 const errorMessages = {
   NO_TITLE: "Please provide a title for the book.",
   NO_AUTHOR: "Please provide an author for the book.",
@@ -89,36 +109,44 @@ const errorMessages = {
   BOOK_DOES_NOT_EXIST: "The book with the provided title does not exist.",
 };
 
+// ================================
+// Event listeners
+// ================================
+
+// Render table and book count on page load
 window.addEventListener("DOMContentLoaded", () => {
   renderTable(books);
   updateBookCount();
 });
 
-btnShowAddBookModal.addEventListener("click", () => {
-  addBookModal.showModal();
-});
+// Modal open/close handlers
+btnShowAddBookModal.addEventListener("click", () => addBookModal.showModal());
+btnShowDeleteBookByTitleModal.addEventListener("click", () =>
+  deleteBookByTitleModal.showModal()
+);
 
-btnShowDeleteBookByTitleModal.addEventListener("click", () => {
-  deleteBookByTitleModal.showModal();
-});
-
-btnAddBook.addEventListener("click", insertBook);
 btnCancelAdd.addEventListener("click", () => addBookModal.close());
-
-btnSaveEdit.addEventListener("click", saveBook);
 btnCancelEdit.addEventListener("click", () => editBookModal.close());
-
-btnConfirmDelete.addEventListener("click", deleteBook);
 btnCancelDelete.addEventListener("click", () => deleteBookModal.close());
-
-btnConfirmDeleteByTitle.addEventListener("click", deleteBookByTitle);
 btnCancelDeleteByTitle.addEventListener("click", () =>
   deleteBookByTitleModal.close()
 );
 
+// Book action handlers
+btnAddBook.addEventListener("click", insertBook);
+btnSaveEdit.addEventListener("click", saveBook);
+btnConfirmDelete.addEventListener("click", deleteBook);
+btnConfirmDeleteByTitle.addEventListener("click", deleteBookByTitle);
+
+// Restrict year input fields to numeric values
 allowOnlyNumbers(addBookModalBookYear);
 allowOnlyNumbers(editBookModalBookYear);
 
+// ================================
+// Input validation helper functions
+// ================================
+
+// Restricts input to numeric keys only
 function allowOnlyNumbers(inputElement) {
   inputElement.addEventListener("keydown", (e) => {
     const allowedKeys = [
@@ -128,40 +156,36 @@ function allowOnlyNumbers(inputElement) {
       "ArrowRight",
       "Tab",
     ];
-
-    if ((e.key >= "0" && e.key <= "9") || allowedKeys.includes(e.key)) {
-      return; // Allow number keys and control keys
-    }
-
-    e.preventDefault(); // Block everything else
+    if ((e.key >= "0" && e.key <= "9") || allowedKeys.includes(e.key)) return;
+    e.preventDefault();
   });
 }
 
+// ================================
+// UI update functions
+// ================================
+
+// Renders the entire book table
 function renderTable(bookList) {
+  bookTable.innerHTML = tableHeader; // Reset table
   bookList.forEach((book, index) => {
     const row = document.createElement("tr");
 
-    const idCell = document.createElement("td");
-    idCell.innerText = index + 1;
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${book.title}</td>
+      <td>${book.author}</td>
+      <td>${book.year}</td>
+      <td>${book.genre}</td>
+      <td class="tableActions">
+        <button class="btnEdit">Edit</button>
+        <button class="btnDelete">Delete</button>
+      </td>`;
 
-    const titleCell = document.createElement("td");
-    titleCell.innerText = book.title;
+    // Add listeners to buttons
+    const editBtn = row.querySelector(".btnEdit");
+    const deleteBtn = row.querySelector(".btnDelete");
 
-    const authorCell = document.createElement("td");
-    authorCell.innerText = book.author;
-
-    const yearCell = document.createElement("td");
-    yearCell.innerText = book.year;
-
-    const genreCell = document.createElement("td");
-    genreCell.innerText = book.genre;
-
-    const actionsCell = document.createElement("td");
-    actionsCell.classList.add("tableActions");
-
-    const editBtn = document.createElement("button");
-    editBtn.innerText = "Edit";
-    editBtn.classList.add("btnEdit");
     editBtn.addEventListener("click", () => {
       editBookModal.setAttribute("target", index);
       editBookModalBookTitle.value = book.title;
@@ -171,160 +195,123 @@ function renderTable(bookList) {
       editBookModal.showModal();
     });
 
-    const deleteBtn = document.createElement("button");
-    deleteBtn.innerText = "Delete";
-    deleteBtn.classList.add("btnDelete");
     deleteBtn.addEventListener("click", () => {
       deleteBookModal.setAttribute("target", index);
       deleteBookModal.showModal();
     });
 
-    actionsCell.appendChild(editBtn);
-    actionsCell.appendChild(deleteBtn);
-
-    row.appendChild(idCell);
-    row.appendChild(titleCell);
-    row.appendChild(authorCell);
-    row.appendChild(yearCell);
-    row.appendChild(genreCell);
-    row.appendChild(actionsCell);
-
     bookTable.appendChild(row);
   });
 }
 
+// Updates the text showing total book count
 function updateBookCount() {
   bookCountText.innerText = "Total books: " + books.length;
 }
 
+// ================================
+// CRUD FUNCTIONALITY
+// ================================
+
+// Adds a new book entry
 function insertBook() {
-  const titleText = addBookModalBookTitle.value;
-  const authorText = addBookModalBookAuthor.value;
+  const titleText = addBookModalBookTitle.value.trim();
+  const authorText = addBookModalBookAuthor.value.trim();
   const yearNumber = parseInt(addBookModalBookYear.value);
-  const genreText = addBookModalBookGenre.value;
+  const genreText = addBookModalBookGenre.value.trim();
 
-  if (titleText == "") {
-    addBookErrorMessage.classList.remove("hidden");
-    addBookErrorMessage.textContent = errorMessages.NO_TITLE;
-    return;
-  } else if (authorText == "") {
-    addBookErrorMessage.classList.remove("hidden");
-    addBookErrorMessage.textContent = errorMessages.NO_AUTHOR;
-    return;
-  } else if (Number.isNaN(yearNumber)) {
-    addBookErrorMessage.classList.remove("hidden");
-    addBookErrorMessage.textContent = errorMessages.NO_YEAR;
-    return;
-  } else if (genreText == "") {
-    addBookErrorMessage.classList.remove("hidden");
-    addBookErrorMessage.textContent = errorMessages.NO_GENRE;
-    return;
-  } else if (!(yearNumber > 0 && yearNumber <= new Date().getFullYear())) {
-    addBookErrorMessage.classList.remove("hidden");
-    addBookErrorMessage.textContent = errorMessages.INVALID_YEAR;
-    return;
-  } else {
-    addBookErrorMessage.classList.add("hidden");
-    const newBookEntry = {
-      title: titleText,
-      author: authorText,
-      year: yearNumber,
-      genre: genreText,
-    };
+  if (!titleText) return showError(addBookErrorMessage, errorMessages.NO_TITLE);
+  if (!authorText)
+    return showError(addBookErrorMessage, errorMessages.NO_AUTHOR);
+  if (Number.isNaN(yearNumber))
+    return showError(addBookErrorMessage, errorMessages.NO_YEAR);
+  if (!genreText) return showError(addBookErrorMessage, errorMessages.NO_GENRE);
+  if (!(yearNumber > 0 && yearNumber <= new Date().getFullYear()))
+    return showError(addBookErrorMessage, errorMessages.INVALID_YEAR);
 
-    books.push(newBookEntry);
+  addBookErrorMessage.classList.add("hidden");
 
-    bookTable.innerHTML = tableHeader;
-
-    renderTable(books);
-    updateBookCount();
-    addBookModal.close();
-  }
+  books.push({
+    title: titleText,
+    author: authorText,
+    year: yearNumber,
+    genre: genreText,
+  });
+  renderTable(books);
+  updateBookCount();
+  addBookModal.close();
 }
 
+// Saves edited book details
 function saveBook() {
-  const editTarget = parseInt(editBookModal.getAttribute("target"));
-
-  const titleText = editBookModalBookTitle.value;
-  const authorText = editBookModalBookAuthor.value;
+  const index = parseInt(editBookModal.getAttribute("target"));
+  const titleText = editBookModalBookTitle.value.trim();
+  const authorText = editBookModalBookAuthor.value.trim();
   const yearNumber = parseInt(editBookModalBookYear.value);
-  const genreText = editBookModalBookGenre.value;
+  const genreText = editBookModalBookGenre.value.trim();
 
-  if (titleText == "") {
-    editBookErrorMessage.classList.remove("hidden");
-    editBookErrorMessage.textContent = errorMessages.NO_TITLE;
-    return;
-  } else if (authorText == "") {
-    editBookErrorMessage.classList.remove("hidden");
-    editBookErrorMessage.textContent = errorMessages.NO_AUTHOR;
-    return;
-  } else if (Number.isNaN(yearNumber)) {
-    editBookErrorMessage.classList.remove("hidden");
-    editBookErrorMessage.textContent = errorMessages.NO_YEAR;
-    return;
-  } else if (genreText == "") {
-    editBookErrorMessage.classList.remove("hidden");
-    editBookErrorMessage.textContent = errorMessages.NO_GENRE;
-    return;
-  } else if (!(yearNumber > 0 && yearNumber <= new Date().getFullYear())) {
-    editBookErrorMessage.classList.remove("hidden");
-    editBookErrorMessage.textContent = errorMessages.INVALID_YEAR;
-    return;
-  } else {
-    editBookErrorMessage.classList.add("hidden");
-    const updatedBookEntry = {
-      title: titleText,
-      author: authorText,
-      year: yearNumber,
-      genre: genreText,
-    };
+  if (!titleText)
+    return showError(editBookErrorMessage, errorMessages.NO_TITLE);
+  if (!authorText)
+    return showError(editBookErrorMessage, errorMessages.NO_AUTHOR);
+  if (Number.isNaN(yearNumber))
+    return showError(editBookErrorMessage, errorMessages.NO_YEAR);
+  if (!genreText)
+    return showError(editBookErrorMessage, errorMessages.NO_GENRE);
+  if (!(yearNumber > 0 && yearNumber <= new Date().getFullYear()))
+    return showError(editBookErrorMessage, errorMessages.INVALID_YEAR);
 
-    books[editTarget] = updatedBookEntry;
-    bookTable.innerHTML = tableHeader;
-    renderTable(books);
-    editBookModal.close();
-  }
+  editBookErrorMessage.classList.add("hidden");
+
+  books[index] = {
+    title: titleText,
+    author: authorText,
+    year: yearNumber,
+    genre: genreText,
+  };
+  renderTable(books);
+  editBookModal.close();
 }
 
+// Deletes a book by index
 function deleteBook() {
-  const deleteTarget = parseInt(deleteBookModal.getAttribute("target"));
-  books.splice(deleteTarget, 1);
-  bookTable.innerHTML = tableHeader;
+  const index = parseInt(deleteBookModal.getAttribute("target"));
+  books.splice(index, 1);
   renderTable(books);
   updateBookCount();
   deleteBookModal.close();
 }
 
+// Deletes a book by matching its title
 function deleteBookByTitle() {
-  const bookTitle = deleteBookByTitleModalBookTitle.value;
-  let deleted = false;
+  const bookTitle = deleteBookByTitleModalBookTitle.value.trim();
+  if (!bookTitle)
+    return showError(deleteBookByTitleErrorMessage, errorMessages.NO_TITLE);
 
-  if (bookTitle == "") {
-    deleteBookByTitleErrorMessage.classList.remove("hidden");
-    deleteBookByTitleErrorMessage.textContent = errorMessages.NO_TITLE;
-    return;
-  } else {
-    for (let i = 0; i < books.length; i++) {
-      if (books[i].title.toLowerCase() == bookTitle.toLowerCase()) {
-        books.splice(i, 1);
-        deleted = true;
-        deleteBookByTitleErrorMessage.classList.add("hidden");
-        break;
-      }
-    }
+  const index = books.findIndex(
+    (b) => b.title.toLowerCase() === bookTitle.toLowerCase()
+  );
 
-    bookTable.innerHTML = tableHeader;
-
-    renderTable(books);
-    updateBookCount();
-
-    if (!deleted) {
-      deleteBookByTitleErrorMessage.classList.remove("hidden");
-      deleteBookByTitleErrorMessage.textContent =
-        errorMessages.BOOK_DOES_NOT_EXIST;
-      return;
-    }
-
-    deleteBookByTitleModal.close();
+  if (index === -1) {
+    return showError(
+      deleteBookByTitleErrorMessage,
+      errorMessages.BOOK_DOES_NOT_EXIST
+    );
   }
+
+  books.splice(index, 1);
+  deleteBookByTitleErrorMessage.classList.add("hidden");
+  renderTable(books);
+  updateBookCount();
+  deleteBookByTitleModal.close();
+}
+
+// ================================
+// Utility functions
+// ================================
+
+// Shows error message in a provided element
+function showError(element, message) {
+  element.classList.remove("hidden");
+  element.textContent = message;
 }
