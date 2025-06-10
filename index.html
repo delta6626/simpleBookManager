@@ -12,7 +12,13 @@
         <div><p class="titleText">Simple Book Manager</p></div>
         <div>
           <button class="btnAddBook" id="btnShowAddBookModal">
-            Add new book
+            Add a new book
+          </button>
+          <button
+            class="btnDeleteBookByTitle"
+            id="btnShowDeleteBookByTitleModal"
+          >
+            Delete a book
           </button>
         </div>
       </header>
@@ -108,6 +114,20 @@
       <div class="modalActions">
         <button class="btnDelete" id="btnConfirmDelete">Confirm</button>
         <button class="btnCancel" id="btnCancelDelete">Cancel</button>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="deleteBookByTitleModal">
+      <h3 class="modalTitle">Delete a Book by Title</h3>
+      <input
+        class="modalInput"
+        id="deleteBookByTitleModalBookTitle"
+        type="text"
+        placeholder="Title"
+      />
+      <div class="modalActions">
+        <button class="btnDelete" id="btnConfirmDeleteByTitle">Confirm</button>
+        <button class="btnCancel" id="btnCancelDeleteByTitle">Cancel</button>
       </div>
     </dialog>
 

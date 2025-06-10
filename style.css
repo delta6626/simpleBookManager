@@ -22,6 +22,7 @@ header {
 .btnAddBook,
 .btnEdit,
 .btnDelete,
+.btnDeleteBookByTitle,
 .btnConfirm,
 .btnCancel,
 .btnDelete {
@@ -97,7 +98,8 @@ header {
   background-color: #594ccc;
 }
 
-.btnDelete {
+.btnDelete,
+.btnDeleteBookByTitle {
   background-color: #f53838;
 }
 

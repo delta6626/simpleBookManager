@@ -11,6 +11,9 @@ const bookCountText = document.getElementById("bookCountText");
 const addBookModal = document.getElementById("addBookModal");
 const editBookModal = document.getElementById("editBookModal");
 const deleteBookModal = document.getElementById("deleteBookModal");
+const deleteBookByTitleModal = document.getElementById(
+  "deleteBookByTitleModal"
+);
 
 const addBookModalBookTitle = document.getElementById("addBookModalBookTitle");
 const addBookModalBookAuthor = document.getElementById(
@@ -31,7 +34,14 @@ const editBookModalBookGenre = document.getElementById(
   "editBookModalBookGenre"
 );
 
+const deleteBookByTitleModalBookTitle = document.getElementById(
+  "deleteBookByTitleModalBookTitle"
+);
+
 const btnShowAddBookModal = document.getElementById("btnShowAddBookModal");
+const btnShowDeleteBookByTitleModal = document.getElementById(
+  "btnShowDeleteBookByTitleModal"
+);
 const btnAddBook = document.getElementById("btnAddBook");
 const btnCancelAdd = document.getElementById("btnCancelAdd");
 
@@ -40,6 +50,13 @@ const btnCancelEdit = document.getElementById("btnCancelEdit");
 
 const btnConfirmDelete = document.getElementById("btnConfirmDelete");
 const btnCancelDelete = document.getElementById("btnCancelDelete");
+
+const btnConfirmDeleteByTitle = document.getElementById(
+  "btnConfirmDeleteByTitle"
+);
+const btnCancelDeleteByTitle = document.getElementById(
+  "btnCancelDeleteByTitle"
+);
 
 let books = [
   {
@@ -66,6 +83,10 @@ btnShowAddBookModal.addEventListener("click", () => {
   addBookModal.showModal();
 });
 
+btnShowDeleteBookByTitleModal.addEventListener("click", () => {
+  deleteBookByTitleModal.showModal();
+});
+
 btnAddBook.addEventListener("click", insertBook);
 btnCancelAdd.addEventListener("click", () => addBookModal.close());
 
@@ -74,6 +95,11 @@ btnCancelEdit.addEventListener("click", () => editBookModal.close());
 
 btnConfirmDelete.addEventListener("click", deleteBook);
 btnCancelDelete.addEventListener("click", () => deleteBookModal.close());
+
+btnConfirmDeleteByTitle.addEventListener("click", deleteBookByTitle);
+btnCancelDeleteByTitle.addEventListener("click", () =>
+  deleteBookByTitleModal.close()
+);
 
 function renderTable(bookList) {
   bookList.forEach((book, index) => {
@@ -209,4 +235,34 @@ function deleteBook() {
   renderTable(books);
   updateBookCount();
   deleteBookModal.close();
+}
+
+function deleteBookByTitle() {
+  const bookTitle = deleteBookByTitleModalBookTitle.value;
+  let deleted = false;
+
+  if (bookTitle == "") {
+    alert("Please enter the title of the book to delete");
+    return;
+  } else {
+    for (let i = 0; i < books.length; i++) {
+      if (books[i].title.toLowerCase() == bookTitle.toLowerCase()) {
+        books.splice(i, 1);
+        deleted = true;
+        break;
+      }
+    }
+
+    bookTable.innerHTML = tableHeader;
+
+    renderTable(books);
+    updateBookCount();
+
+    if (!deleted) {
+      alert("This book doesn't exist");
+      return;
+    }
+
+    deleteBookByTitleModal.close();
+  }
 }
