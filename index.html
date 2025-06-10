@@ -3,13 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Title of the page -->
     <title>Simple Book Manager</title>
+    <!-- Link external stylesheet -->
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main>
+      <!-- Header of the page -->
       <header>
-        <div><p class="titleText">Simple Book Manager</p></div>
+        <!-- DIV containing name of the app -->
+        <div>
+          <p class="titleText">Simple Book Manager</p>
+        </div>
+
+        <!-- DIV containing buttons for creating and deleting books -->
         <div>
           <button class="btnAddBook" id="btnShowAddBookModal">
             Add a new book
@@ -22,10 +30,11 @@
           </button>
         </div>
       </header>
-
+      <!-- Text to show total number of books -->
       <p class="bookCountText" id="bookCountText">Total books</p>
-
+      <!-- Section containing the books table -->
       <section class="bookTableContainer">
+        <!-- The main table where all book data will be displayed -->
         <table class="bookTable" id="bookTable">
           <tr>
             <th>ID</th>
@@ -39,10 +48,13 @@
       </section>
     </main>
 
-    <!-- Add Book Modal -->
+    <!-- Add book modal -->
     <dialog class="modal" id="addBookModal">
+      <!-- Modal title -->
       <h3 class="modalTitle">Add a New Book</h3>
+      <!-- Paragraph element to show error messages -->
       <p class="errorMessage hidden" id="addBookErrorMessage"></p>
+      <!-- Input elements for book details -->
       <input
         class="modalInput"
         id="addBookModalBookTitle"
@@ -68,6 +80,7 @@
         type="text"
         placeholder="Genre"
       />
+      <!-- Action buttons of the modal -->
       <div class="modalActions">
         <button class="btnConfirm" id="btnAddBook">Add Book</button>
         <button class="btnCancel" id="btnCancelAdd">Discard</button>
@@ -76,8 +89,11 @@
 
     <!-- Edit Book Modal -->
     <dialog class="modal" id="editBookModal">
+      <!-- Modal title -->
       <h3 class="modalTitle">Edit Book</h3>
+      <!-- Paragraph element to show error messages -->
       <p class="errorMessage hidden" id="editBookErrorMessage"></p>
+      <!-- Input elements for book details -->
       <input
         class="modalInput"
         id="editBookModalBookTitle"
@@ -103,6 +119,7 @@
         type="text"
         placeholder="Genre"
       />
+      <!-- Action buttons of the modal -->
       <div class="modalActions">
         <button class="btnConfirm" id="btnSaveEdit">Save</button>
         <button class="btnCancel" id="btnCancelEdit">Discard</button>
@@ -111,10 +128,13 @@
 
     <!-- Delete Confirmation Modal -->
     <dialog class="modal" id="deleteBookModal">
+      <!-- Modal title -->
       <h3 class="modalTitle">Delete Book</h3>
+      <!-- Warning message -->
       <p>
         Are you sure you want to delete this book? This action cannot be undone.
       </p>
+      <!-- Action buttons of the modal -->
       <div class="modalActions">
         <button class="btnDelete" id="btnConfirmDelete">Confirm</button>
         <button class="btnCancel" id="btnCancelDelete">Cancel</button>
@@ -122,20 +142,25 @@
     </dialog>
 
     <dialog class="modal" id="deleteBookByTitleModal">
+      <!-- Modal title -->
       <h3 class="modalTitle">Delete a Book by Title</h3>
+      <!-- Paragraph element to show error messages -->
       <p class="errorMessage hidden" id="deleteBookByTitleErrorMessage"></p>
+      <!-- Input element to get title of the book -->
       <input
         class="modalInput"
         id="deleteBookByTitleModalBookTitle"
         type="text"
         placeholder="Title"
       />
+      <!-- Action buttons of the modal -->
       <div class="modalActions">
         <button class="btnDelete" id="btnConfirmDeleteByTitle">Confirm</button>
         <button class="btnCancel" id="btnCancelDeleteByTitle">Cancel</button>
       </div>
     </dialog>
 
+    <!-- Link external JS file -->
     <script src="script.js"></script>
   </body>
 </html>
