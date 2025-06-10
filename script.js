@@ -200,7 +200,7 @@ function updateBookCount() {
 function insertBook() {
   const titleText = addBookModalBookTitle.value;
   const authorText = addBookModalBookAuthor.value;
-  const yearText = addBookModalBookYear.value;
+  const yearNumber = parseInt(addBookModalBookYear.value);
   const genreText = addBookModalBookGenre.value;
 
   if (titleText == "") {
@@ -211,7 +211,7 @@ function insertBook() {
     addBookErrorMessage.classList.remove("hidden");
     addBookErrorMessage.textContent = errorMessages.NO_AUTHOR;
     return;
-  } else if (yearText == "") {
+  } else if (Number.isNaN(yearNumber)) {
     addBookErrorMessage.classList.remove("hidden");
     addBookErrorMessage.textContent = errorMessages.NO_YEAR;
     return;
@@ -219,12 +219,16 @@ function insertBook() {
     addBookErrorMessage.classList.remove("hidden");
     addBookErrorMessage.textContent = errorMessages.NO_GENRE;
     return;
+  } else if (!(yearNumber > 0 && yearNumber <= new Date().getFullYear())) {
+    addBookErrorMessage.classList.remove("hidden");
+    addBookErrorMessage.textContent = errorMessages.INVALID_YEAR;
+    return;
   } else {
     addBookErrorMessage.classList.add("hidden");
     const newBookEntry = {
       title: titleText,
       author: authorText,
-      year: yearText,
+      year: yearNumber,
       genre: genreText,
     };
 
@@ -243,7 +247,7 @@ function saveBook() {
 
   const titleText = editBookModalBookTitle.value;
   const authorText = editBookModalBookAuthor.value;
-  const yearText = editBookModalBookYear.value;
+  const yearNumber = parseInt(editBookModalBookYear.value);
   const genreText = editBookModalBookGenre.value;
 
   if (titleText == "") {
@@ -254,7 +258,7 @@ function saveBook() {
     editBookErrorMessage.classList.remove("hidden");
     editBookErrorMessage.textContent = errorMessages.NO_AUTHOR;
     return;
-  } else if (yearText == "") {
+  } else if (Number.isNaN(yearNumber)) {
     editBookErrorMessage.classList.remove("hidden");
     editBookErrorMessage.textContent = errorMessages.NO_YEAR;
     return;
@@ -262,11 +266,16 @@ function saveBook() {
     editBookErrorMessage.classList.remove("hidden");
     editBookErrorMessage.textContent = errorMessages.NO_GENRE;
     return;
+  } else if (!(yearNumber > 0 && yearNumber <= new Date().getFullYear())) {
+    editBookErrorMessage.classList.remove("hidden");
+    editBookErrorMessage.textContent = errorMessages.INVALID_YEAR;
+    return;
   } else {
+    editBookErrorMessage.classList.add("hidden");
     const updatedBookEntry = {
       title: titleText,
       author: authorText,
-      year: yearText,
+      year: yearNumber,
       genre: genreText,
     };
 
@@ -291,13 +300,15 @@ function deleteBookByTitle() {
   let deleted = false;
 
   if (bookTitle == "") {
-    alert("Please enter the title of the book to delete");
+    deleteBookByTitleErrorMessage.classList.remove("hidden");
+    deleteBookByTitleErrorMessage.textContent = errorMessages.NO_TITLE;
     return;
   } else {
     for (let i = 0; i < books.length; i++) {
       if (books[i].title.toLowerCase() == bookTitle.toLowerCase()) {
         books.splice(i, 1);
         deleted = true;
+        deleteBookByTitleErrorMessage.classList.add("hidden");
         break;
       }
     }
@@ -308,7 +319,9 @@ function deleteBookByTitle() {
     updateBookCount();
 
     if (!deleted) {
-      alert("This book doesn't exist");
+      deleteBookByTitleErrorMessage.classList.remove("hidden");
+      deleteBookByTitleErrorMessage.textContent =
+        errorMessages.BOOK_DOES_NOT_EXIST;
       return;
     }
 
