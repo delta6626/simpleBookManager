@@ -1,0 +1,130 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+main {
+  padding: 2.5rem 5rem;
+  width: 100vw;
+  height: 100vh;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btnAddBook,
+.btnEdit,
+.btnDelete,
+.btnConfirm,
+.btnCancel,
+.btnDelete {
+  padding: 0.5rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  cursor: pointer;
+  min-width: 70px;
+}
+
+.modalInput {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #c4c4c4;
+}
+
+.bookCountText {
+  margin: 1rem 0 0.5rem;
+}
+
+.titleText {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.bookTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.bookTable td,
+.bookTable th {
+  text-align: center;
+  padding: 0.75rem;
+  border-bottom: 1px solid #c4c4c4;
+  border-right: 1px solid #c4c4c4;
+}
+
+.bookTable tr td:first-child,
+.bookTable tr th:first-child {
+  border-left: 1px solid #c4c4c4;
+}
+
+.bookTable tr th {
+  border-top: 1px solid #c4c4c4;
+}
+
+.bookTable tr:first-child th:first-child {
+  border-top-left-radius: 0.5rem;
+}
+
+.bookTable tr:first-child th:last-child {
+  border-top-right-radius: 0.5rem;
+}
+
+.bookTable tr:last-child td:first-child {
+  border-bottom-left-radius: 0.5rem;
+}
+
+.bookTable tr:last-child td:last-child {
+  border-bottom-right-radius: 0.5rem;
+}
+
+.btnAddBook,
+.btnEdit,
+.btnConfirm,
+.btnCancel {
+  background-color: #594ccc;
+}
+
+.btnDelete {
+  background-color: #f53838;
+}
+
+.modal {
+  width: 500px;
+  padding: 1rem;
+  border: 1px solid #c4c4c4;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tableActions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: end;
+  gap: 0.5rem;
+}
+
+.modalTitle {
+  margin-bottom: 1rem;
+}
