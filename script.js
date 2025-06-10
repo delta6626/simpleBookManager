@@ -128,6 +128,10 @@ function renderTable(bookList) {
     editBtn.classList.add("btnEdit");
     editBtn.addEventListener("click", () => {
       editBookModal.setAttribute("target", index);
+      editBookModalBookTitle.value = book.title;
+      editBookModalBookAuthor.value = book.author;
+      editBookModalBookYear.value = book.year;
+      editBookModalBookGenre.value = book.genre;
       editBookModal.showModal();
     });
 
