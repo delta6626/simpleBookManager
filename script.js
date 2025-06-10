@@ -1,4 +1,12 @@
 const bookTable = document.getElementById("bookTable");
+const tableHeader = `<tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Year</th>
+                        <th>Genre</th>
+                        <th>Actions</th>
+                     </tr>`;
 const bookCountText = document.getElementById("bookCountText");
 const addBookModal = document.getElementById("addBookModal");
 const editBookModal = document.getElementById("editBookModal");
@@ -72,7 +80,7 @@ function renderTable(bookList) {
     const row = document.createElement("tr");
 
     const idCell = document.createElement("td");
-    idCell.innerText = index;
+    idCell.innerText = index + 1;
 
     const titleCell = document.createElement("td");
     titleCell.innerText = book.title;
@@ -123,10 +131,82 @@ function updateBookCount() {
   bookCountText.innerText = "Total books: " + books.length;
 }
 
-function validateData() {}
+function insertBook() {
+  const titleText = addBookModalBookTitle.value;
+  const authorText = addBookModalBookAuthor.value;
+  const yearText = addBookModalBookYear.value;
+  const genreText = addBookModalBookGenre.value;
 
-function saveBook() {}
+  if (titleText == "") {
+    alert("Please add a book name");
+    return;
+  } else if (authorText == "") {
+    alert("Please add an author name");
+    return;
+  } else if (yearText == "") {
+    alert("Please add a year of publication");
+    return;
+  } else if (genreText == "") {
+    alert("Please add a genre");
+    return;
+  } else {
+    const newBookEntry = {
+      title: titleText,
+      author: authorText,
+      year: yearText,
+      genre: genreText,
+    };
 
-function insertBook() {}
+    books.push(newBookEntry);
 
-function deleteBook() {}
+    bookTable.innerHTML = tableHeader;
+
+    renderTable(books);
+    updateBookCount();
+    addBookModal.close();
+  }
+}
+
+function saveBook() {
+  const editTarget = parseInt(editBookModal.getAttribute("target"));
+
+  const titleText = editBookModalBookTitle.value;
+  const authorText = editBookModalBookAuthor.value;
+  const yearText = editBookModalBookYear.value;
+  const genreText = editBookModalBookGenre.value;
+
+  if (titleText == "") {
+    alert("Please add a book name");
+    return;
+  } else if (authorText == "") {
+    alert("Please add an author name");
+    return;
+  } else if (yearText == "") {
+    alert("Please add a year of publication");
+    return;
+  } else if (genreText == "") {
+    alert("Please add a genre");
+    return;
+  } else {
+    const updatedBookEntry = {
+      title: titleText,
+      author: authorText,
+      year: yearText,
+      genre: genreText,
+    };
+
+    books[editTarget] = updatedBookEntry;
+    bookTable.innerHTML = tableHeader;
+    renderTable(books);
+    editBookModal.close();
+  }
+}
+
+function deleteBook() {
+  const deleteTarget = parseInt(deleteBookModal.getAttribute("target"));
+  books.splice(deleteTarget, 1);
+  bookTable.innerHTML = tableHeader;
+  renderTable(books);
+  updateBookCount();
+  deleteBookModal.close();
+}
