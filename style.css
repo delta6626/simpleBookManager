@@ -103,6 +103,15 @@ header {
   background-color: #f53838;
 }
 
+.errorMessage {
+  margin-bottom: 0.5rem;
+  color: #f53838;
+}
+
+.hidden {
+  display: none;
+}
+
 .modal {
   width: 500px;
   padding: 1rem;

@@ -58,6 +58,12 @@ const btnCancelDeleteByTitle = document.getElementById(
   "btnCancelDeleteByTitle"
 );
 
+const addBookErrorMessage = document.getElementById("addBookErrorMessage");
+const editBookErrorMessage = document.getElementById("editBookErrorMessage");
+const deleteBookByTitleErrorMessage = document.getElementById(
+  "deleteBookByTitleErrorMessage"
+);
+
 let books = [
   {
     title: "To Kill a Mockingbird",
@@ -73,6 +79,15 @@ let books = [
     genre: "Adventure",
   },
 ];
+
+const errorMessages = {
+  NO_TITLE: "Please provide a title for the book.",
+  NO_AUTHOR: "Please provide an author for the book.",
+  NO_YEAR: "Please provide a year for the book.",
+  NO_GENRE: "Please provide a genre for the book.",
+  INVALID_YEAR: "The year entered is invalid. Please enter a valid value.",
+  BOOK_DOES_NOT_EXIST: "The book with the provided title does not exist.",
+};
 
 window.addEventListener("DOMContentLoaded", () => {
   renderTable(books);
@@ -100,6 +115,27 @@ btnConfirmDeleteByTitle.addEventListener("click", deleteBookByTitle);
 btnCancelDeleteByTitle.addEventListener("click", () =>
   deleteBookByTitleModal.close()
 );
+
+allowOnlyNumbers(addBookModalBookYear);
+allowOnlyNumbers(editBookModalBookYear);
+
+function allowOnlyNumbers(inputElement) {
+  inputElement.addEventListener("keydown", (e) => {
+    const allowedKeys = [
+      "Backspace",
+      "Delete",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+    ];
+
+    if ((e.key >= "0" && e.key <= "9") || allowedKeys.includes(e.key)) {
+      return; // Allow number keys and control keys
+    }
+
+    e.preventDefault(); // Block everything else
+  });
+}
 
 function renderTable(bookList) {
   bookList.forEach((book, index) => {
@@ -168,18 +204,23 @@ function insertBook() {
   const genreText = addBookModalBookGenre.value;
 
   if (titleText == "") {
-    alert("Please add a book name");
+    addBookErrorMessage.classList.remove("hidden");
+    addBookErrorMessage.textContent = errorMessages.NO_TITLE;
     return;
   } else if (authorText == "") {
-    alert("Please add an author name");
+    addBookErrorMessage.classList.remove("hidden");
+    addBookErrorMessage.textContent = errorMessages.NO_AUTHOR;
     return;
   } else if (yearText == "") {
-    alert("Please add a year of publication");
+    addBookErrorMessage.classList.remove("hidden");
+    addBookErrorMessage.textContent = errorMessages.NO_YEAR;
     return;
   } else if (genreText == "") {
-    alert("Please add a genre");
+    addBookErrorMessage.classList.remove("hidden");
+    addBookErrorMessage.textContent = errorMessages.NO_GENRE;
     return;
   } else {
+    addBookErrorMessage.classList.add("hidden");
     const newBookEntry = {
       title: titleText,
       author: authorText,
@@ -206,16 +247,20 @@ function saveBook() {
   const genreText = editBookModalBookGenre.value;
 
   if (titleText == "") {
-    alert("Please add a book name");
+    editBookErrorMessage.classList.remove("hidden");
+    editBookErrorMessage.textContent = errorMessages.NO_TITLE;
     return;
   } else if (authorText == "") {
-    alert("Please add an author name");
+    editBookErrorMessage.classList.remove("hidden");
+    editBookErrorMessage.textContent = errorMessages.NO_AUTHOR;
     return;
   } else if (yearText == "") {
-    alert("Please add a year of publication");
+    editBookErrorMessage.classList.remove("hidden");
+    editBookErrorMessage.textContent = errorMessages.NO_YEAR;
     return;
   } else if (genreText == "") {
-    alert("Please add a genre");
+    editBookErrorMessage.classList.remove("hidden");
+    editBookErrorMessage.textContent = errorMessages.NO_GENRE;
     return;
   } else {
     const updatedBookEntry = {
