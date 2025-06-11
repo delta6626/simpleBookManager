@@ -82,7 +82,7 @@ const deleteBookByTitleErrorMessage = document.getElementById(
 // Initial data and error messages
 // ================================
 
-// Array to store book records
+// Array of JSON objects to store book records
 let books = [
   {
     title: "To Kill a Mockingbird",
